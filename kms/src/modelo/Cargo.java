@@ -10,7 +10,7 @@ import persistenciaFWK.ObjetoPersistente;
  */
 public class Cargo extends ObjetoPersistente  {
 
-    String id,nombre;//Comentario Nuevo
+    String id,nombre;//Comentario Modificado
 
     public Cargo(){
         setEstadoObjeto(EstadoNuevo.getInstancia());
