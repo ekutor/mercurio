@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="543" pageHeight="842" columnWidth="503" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha_desde" class="java.lang.String"/>
+	<parameter name="fecha_hasta" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT HISTORIAL_CAJA.ID,
+       HISTORIAL_MOVIMIENTOS_CAJA.CAJA,
+       HISTORIAL_MOVIMIENTOS_CAJA.TIPO_MOV,
+       HISTORIAL_MOVIMIENTOS_CAJA.MONTO,
+       HISTORIAL_MOVIMIENTOS_CAJA.TIPO_MONEDA,
+       HISTORIAL_MOVIMIENTOS_CAJA.PAGADA_A,
+       HISTORIAL_MOVIMIENTOS_CAJA.OBS,
+       HISTORIAL_MOVIMIENTOS_CAJA.SUPERVISOR
+FROM HISTORIAL_CAJA INNER JOIN HISTORIAL_MOVIMIENTOS_CAJA ON HISTORIAL_CAJA.ID = HISTORIAL_MOVIMIENTOS_CAJA.CAJA
+WHERE HISTORIAL_CAJA.FECHA_APERTURA >= $P{fecha_desde}
+AND HISTORIAL_CAJA.FECHA_CIERRE <= $P{fecha_hasta}]]>
+	</queryString>
+	<field name="ID" class="java.lang.String"/>
+	<field name="CAJA" class="java.lang.String"/>
+	<field name="TIPO_MOV" class="java.lang.String"/>
+	<field name="MONTO" class="java.lang.Double"/>
+	<field name="TIPO_MONEDA" class="java.lang.String"/>
+	<field name="PAGADA_A" class="java.lang.String"/>
+	<field name="OBS" class="java.lang.String"/>
+	<field name="SUPERVISOR" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="117" y="5" width="250" height="21" forecolor="#1515B0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOVIMIENTOS DE CAJA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="503" height="18" backcolor="#020275"/>
+			</frame>
+			<staticText>
+				<reportElement x="1" y="0" width="74" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOVIMIENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="0" width="71" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="171" y="0" width="71" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO MONEDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="0" width="84" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUPERVISOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="349" y="0" width="122" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSEVACIONES]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="503" height="18" backcolor="#EEEDF1">
+					<printWhenExpression><![CDATA[($V{COLUMN_COUNT}.intValue()%2==0 ? new Boolean(true) : null)]]></printWhenExpression>
+				</reportElement>
+			</frame>
+			<textField>
+				<reportElement x="1" y="0" width="74" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO_MOV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="85" y="0" width="71" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{MONTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="0" width="71" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO_MONEDA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="254" y="0" width="84" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SUPERVISOR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="0" width="122" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     compras.`NUM_ORDEN` AS compras_NUM_ORDEN,
+     compras.`FACT_PROVEEDOR` AS compras_FACT_PROVEEDOR,
+     proveedor.`RAZONSOCIAL` AS proveedor_RAZONSOCIAL,
+     compras.`FECHA_PEDIDO` AS compras_FECHA_PEDIDO,
+     compras.`FECHA_ENTREGA` AS compras_FECHA_ENTREGA,
+     compras.`TOTAL` AS compras_TOTAL,
+     detalle_compra.`CANT_PEDIDA` AS detalle_compra_CANT_PEDIDA,
+     detalle_compra.`CANT_RECIBIDA` AS detalle_compra_CANT_RECIBIDA,
+     detalle_compra.`PRECIO_UNIDAD` AS detalle_compra_PRECIO_UNIDAD,
+     detalle_compra.`TOTAL` AS detalle_compra_TOTAL,
+     producto.`DESCRIPCION` AS producto_DESCRIPCION,
+     compras.`PAGO_CON` AS compras_PAGO_CON,
+     compras.`CAMBIO` AS compras_CAMBIO,
+     compras.`BASE` AS compras_BASE,
+     compras.`IVA` AS compras_IVA
+FROM
+     `compras` compras INNER JOIN `detalle_compra` detalle_compra ON compras.`NUM_ORDEN` = detalle_compra.`NUM_ORD`
+     INNER JOIN `producto` producto ON detalle_compra.`PRODUCTO` = producto.`ID`
+     INNER JOIN `proveedor` proveedor ON compras.`PROV_ID` = proveedor.`ID`]]>
+	</queryString>
+	<field name="compras_NUM_ORDEN" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="compras_FACT_PROVEEDOR" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proveedor_RAZONSOCIAL" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="compras_FECHA_PEDIDO" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="compras_FECHA_ENTREGA" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="compras_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detalle_compra_CANT_PEDIDA" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detalle_compra_CANT_RECIBIDA" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detalle_compra_PRECIO_UNIDAD" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detalle_compra_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="producto_DESCRIPCION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="compras_PAGO_CON" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="compras_CAMBIO" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="compras_BASE" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="compras_IVA" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

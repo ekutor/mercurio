@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="reportes.ScriptletReport">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fec" class="java.lang.String"/>
+	<parameter name="cat" class="java.lang.String"/>
+	<parameter name="fecha_desde" class="java.lang.String"/>
+	<parameter name="fecha_hasta" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+       VENTA.FECHA AS FECHA,
+      VENTA.HORA AS HORA,
+       MONTH(FECHA) AS MES,
+       YEAR(FECHA) AS AÑO,
+       DAY(FECHA) AS DIA,
+       DETALLE_VENTA.PROD_ID AS PROD_ID,
+       PRODUCTO.DESCRIPCION AS PRODUCTO,
+       CATEGORIA.NOMBRE AS CATEGORIA,
+       SUM(DETALLE_VENTA.CANT) AS CANTIDAD_VENDIDA
+FROM VENTA INNER JOIN DETALLE_VENTA ON DETALLE_VENTA.VENTA_ID = VENTA.ID
+     INNER JOIN PRODUCTO ON PRODUCTO.ID = DETALLE_VENTA.PROD_ID INNER JOIN
+     CATEGORIA ON CATEGORIA.ID = PRODUCTO.CATEGORIA
+WHERE CATEGORIA.ID =$P{cat}
+  AND VENTA.FECHA >=$P{fecha_desde}
+  AND VENTA.FECHA <= $P{fecha_hasta}
+GROUP BY PRODUCTO.ID]]>
+	</queryString>
+	<field name="FECHA" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HORA" class="java.sql.Time">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MES" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AÑO" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DIA" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PROD_ID" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRODUCTO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CATEGORIA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CANTIDAD_VENDIDA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="210" splitType="Stretch">
+			<timeSeriesChart>
+				<chart>
+					<reportElement x="0" y="0" width="555" height="210"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<timeSeriesDataset>
+					<timeSeries>
+						<seriesExpression><![CDATA[$F{PRODUCTO}]]></seriesExpression>
+						<timePeriodExpression><![CDATA[$F{FECHA}]]></timePeriodExpression>
+						<valueExpression><![CDATA[$F{CANTIDAD_VENDIDA}.longValueExact()]]></valueExpression>
+					</timeSeries>
+				</timeSeriesDataset>
+				<timeSeriesPlot>
+					<plot/>
+					<timeAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</timeAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</timeSeriesPlot>
+			</timeSeriesChart>
+		</band>
+	</summary>
+</jasperReport>

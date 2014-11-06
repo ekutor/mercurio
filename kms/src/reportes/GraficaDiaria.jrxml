@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="700" pageHeight="595" orientation="Landscape" columnWidth="660" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="reportes.ScriptletReport">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="mes" class="java.lang.String">
+		<defaultValueExpression><![CDATA["3"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="path" class="java.lang.String">
+		<defaultValueExpression><![CDATA["imagenes\\logo.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombreEmpresa" class="java.lang.String">
+		<defaultValueExpression><![CDATA["KAMYS"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     VENTA.`TOTAL` AS TOTAL,
+     VENTA.`FECHA` AS FECHA,
+     MONTH(FECHA)AS MES,
+     YEAR(FECHA)AS AÑO,
+     DAY(FECHA)AS DIA,
+     SUM(TOTAL)AS SUMA,
+     SUM(IVA) AS TOT_IVA,
+     SUM(BASE) AS TOT_BASE,
+     COUNT(TOTAL) AS CANTIDAD_VENTAS,
+     VENTA.`IVA` AS VENTA_IVA,
+     VENTA.`BASE` AS VENTA_BASE
+FROM
+     `VENTA` VENTA
+WHERE
+     MONTH(FECHA) = $P{mes}
+GROUP BY
+     DIA]]>
+	</queryString>
+	<field name="TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FECHA" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MES" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AÑO" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DIA" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TOT_IVA" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TOT_BASE" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CANTIDAD_VENTAS" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VENTA_IVA" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VENTA_BASE" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="MES">
+		<groupExpression><![CDATA[$F{MES}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="107" y="45" width="357" height="31" forecolor="#1515B0" backcolor="#45569A"/>
+				<textElement textAlignment="Left">
+					<font size="20" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[REPORTE ACUMULADO DE VENTAS ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="164" y="9" width="365" height="35" forecolor="#000066"/>
+				<textElement textAlignment="Center">
+					<font size="26" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nombreEmpresa}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="6" y="9" width="100" height="62"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{path}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement mode="Opaque" x="465" y="45" width="157" height="31" forecolor="#1515B0"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.getMes($F{MES})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="76" width="659" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="4" width="660" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="44" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="23" width="660" height="19" backcolor="#D3D9E7"/>
+				<staticText>
+					<reportElement x="533" y="-1" width="100" height="16"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL VENTA  DIA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="121" y="0" width="130" height="16"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CANTIDAD DE VENTAS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="41" y="0" width="69" height="16"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DIA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="273" y="1" width="93" height="16"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[IVA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="403" y="0" width="100" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[BASE GRABABLE]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="3" width="660" height="20" backcolor="#020275"/>
+				<staticText>
+					<reportElement x="357" y="0" width="59" height="20" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[AÑO]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="415" y="0" width="100" height="20" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{AÑO}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<staticText>
+				<reportElement x="152" y="3" width="80" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="232" y="3" width="159" height="19" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.getMes($F{MES})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="660" height="20" backcolor="#EEEDF1">
+					<printWhenExpression><![CDATA[($V{COLUMN_COUNT}.intValue()%2==0 ? new Boolean(true) : null)]]></printWhenExpression>
+				</reportElement>
+			</frame>
+			<textField>
+				<reportElement x="404" y="1" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{REPORT_SCRIPTLET}.calcularBase($F{TOT_BASE})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="264" y="0" width="118" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{REPORT_SCRIPTLET}.calcularIva($F{TOT_IVA})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="127" y="0" width="115" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CANTIDAD_VENTAS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="533" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{REPORT_SCRIPTLET}.calcular($F{SUMA})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="36" y="0" width="81" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DIA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="28" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="212" y="6" width="144" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pag " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="447" y="6" width="213" height="20"/>
+				<textElement>
+					<font size="9" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Software Desarrollado por Kymera Systems SAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="6" width="92" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Reporte Generado en:]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" x="93" y="6" width="69" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="356" y="6" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="3" width="660" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="289" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="207" y="166" width="257" height="114"/>
+				<graphicElement>
+					<pen lineColor="#8B98F2"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="253" y="198" width="100" height="20" forecolor="#020237"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL IVA ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="216" y="227" width="136" height="20" forecolor="#020237"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL BASE GRABABLE MES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="259" y="256" width="94" height="20" forecolor="#020237"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL VENTA MES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="356" y="198" width="100" height="20" forecolor="#020237"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{REPORT_SCRIPTLET}.getIvaTotal()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="356" y="227" width="100" height="20" forecolor="#020237"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{REPORT_SCRIPTLET}.getBaseTotal()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="356" y="256" width="100" height="20" forecolor="#020237"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{REPORT_SCRIPTLET}.getTotal()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="2" width="660" height="1"/>
+			</line>
+			<bar3DChart>
+				<chart>
+					<reportElement mode="Transparent" x="1" y="6" width="660" height="161" isPrintInFirstWholeBand="true"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{DIA}]]></seriesExpression>
+						<categoryExpression><![CDATA["VENTAS MES " + $P{REPORT_SCRIPTLET}.getMes($F{MES})]]></categoryExpression>
+						<valueExpression><![CDATA[$F{SUMA}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot xOffset="5.0" yOffset="2.0">
+					<plot/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF">
+						<font size="10"/>
+					</itemLabel>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+			<staticText>
+				<reportElement x="298" y="171" width="100" height="20" forecolor="#020237"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" isItalic="true" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TOTALES  MES]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
