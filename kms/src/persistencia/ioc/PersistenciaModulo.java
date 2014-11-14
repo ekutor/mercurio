@@ -28,7 +28,7 @@ public class PersistenciaModulo extends AbstractModule {
         install(new JpaPersistModule(PU));
                 
 	bind(IAdapatdor.class).to(AdaptadorBD.class).in(Singleton.class);
-        bind(ManagerDAO.class).in( Singleton.class);
+        bind(IManagerDAO.class).to(ManagerDAO.class).in( Singleton.class);
     }
     
 }

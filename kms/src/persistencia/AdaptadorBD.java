@@ -12,7 +12,6 @@ import persistencia.business.BusinessObjectPersistence;
 import persistencia.business.BusinessObjectPersistenceMultiple;
 import persistencia.business.BusinessObjectQuery;
 import persistencia.dao.IManagerDAO;
-import persistencia.dao.ManagerDAO;
 
 /**
  * adapta a las necesidades ( Bd o al local )
@@ -21,17 +20,17 @@ import persistencia.dao.ManagerDAO;
  */
 public class AdaptadorBD implements IAdapatdor {
 
-    private ManagerDAO db;
+    private IManagerDAO db;
 
     @Inject
-    public AdaptadorBD(PersistService service, ManagerDAO db) {
+    public AdaptadorBD(PersistService service, IManagerDAO db) {
         this.db = db;
         service.start();
     }
 
     @Override
-    public List<?> getData(String query, String PU, Map<Object, Object> params,
-            String businessObject, boolean sync) throws Exception {
+    public List<?> getData(String query, Map<Object, Object> params,
+            String businessObject) throws Exception {
         List<?> entities = new ArrayList<Object>();
         try {
             if (query != null) {
@@ -55,7 +54,7 @@ public class AdaptadorBD implements IAdapatdor {
     }
 
     @Override
-    public List<?> getDataGrid(String query, String PU, Map<Object, Object> params,
+    public List<?> getDataGrid(String query, Map<Object, Object> params,
             String businessObject, int offset, int limit, String objClass) throws Exception {
         List<Object> entities = new ArrayList<Object>();
         try {
@@ -64,7 +63,7 @@ public class AdaptadorBD implements IAdapatdor {
             }
             entities = (List<Object>) DBUtils.deleteNulls(entities);
             if (businessObject != null) {
-                applyQBusiness(query, PU, businessObject, entities);
+                applyQBusiness(query, businessObject, entities);
             }
         } catch (Exception ex) {
             throw ex;
@@ -73,7 +72,7 @@ public class AdaptadorBD implements IAdapatdor {
     }
 
     @Override
-    public void applyQBusiness(String query, String PU, String businessObject, List<Object> entities)
+    public void applyQBusiness(String query, String businessObject, List<Object> entities)
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, Exception {
         if (businessObject == null) {
             return;
@@ -86,24 +85,7 @@ public class AdaptadorBD implements IAdapatdor {
     }
 
     @Override
-    public List<?> getData(String query, String PU, String valueField, String displayField,
-            Map<Object, Object> params, String businessObject) throws Exception {
-        List<Object> entities = new ArrayList<Object>();
-        List<Object> resultados = null;
-        try {
-            if (query != null) {
-                query = "SELECT " + valueField + "," + displayField + " " + query + " ";
-                resultados = (List<Object>) db.executeNativeQuery(query, params);
-            }
-            DBUtils.deleteNulls(resultados);
-        } catch (Exception ex) {
-            throw ex;
-        }
-        return entities;
-    }
-
-    @Override
-    public void update(String query, String PU, Map<Object, Object> params) throws Exception {
+    public void update(String query, Map<Object, Object> params) throws Exception {
         try {
             db.executeUpdate(query, params);
             db.saveChanges();
@@ -113,7 +95,7 @@ public class AdaptadorBD implements IAdapatdor {
     }
 
     @Override
-    public Object saveEntity(Object entity, String PU, String businessObject)
+    public Object saveEntity(Object entity, String businessObject)
             throws Exception {
         try {
             BusinessObjectPersistence business = null;
@@ -121,16 +103,12 @@ public class AdaptadorBD implements IAdapatdor {
                 business = ((BusinessObjectPersistence) Class.forName(businessObject).newInstance());
                 business.beforeSave(db, entity);
             }
-            if(db == null){
-                System.out.println("Nulo");
-            }
             entity = db.save(entity);
             if (businessObject != null) {
                 business.afterSave(db, entity);
             }
             db.saveChanges();
         } catch (Exception ex) {
-            ex.printStackTrace();
             if (ex instanceof RollbackException) {
                 RollbackException re = (RollbackException) ex;
                 DatabaseException dbe = (DatabaseException) re.getCause();
@@ -147,7 +125,7 @@ public class AdaptadorBD implements IAdapatdor {
     }
 
     @Override
-    public void deleteEntities(List<?> entities, String PU, boolean sync)
+    public void deleteEntities(List<?> entities)
             throws Exception {
         try {
             db.delete(entities);
@@ -158,8 +136,7 @@ public class AdaptadorBD implements IAdapatdor {
     }
 
     @Override
-    public void saveEntities(List<?> entities, String PU, String businessObject,
-            boolean sync) throws Exception {
+    public void saveEntities(List<?> entities, String businessObject) throws Exception {
         try {
             BusinessObjectPersistenceMultiple business = null;
 
@@ -178,17 +155,17 @@ public class AdaptadorBD implements IAdapatdor {
     }
 
     @Override
-    public void deleteEntity(Object entidad, String PU) throws Exception {
+    public void deleteEntity(Object entity) throws Exception {
         try {
-            db.delete(entidad);
+            db.delete(entity);
             db.saveChanges();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw ex;
         }
     }
 
     @Override
-    public void deleteEntity(Object entity, String PU, String businessObject) throws Exception {
+    public void deleteEntity(Object entity, String businessObject) throws Exception {
         try {
             BusinessObjectPersistence<Object> business = null;
             if (businessObject != null) {
@@ -207,10 +184,8 @@ public class AdaptadorBD implements IAdapatdor {
     }
 
     @Override
-    public void deleteEntities(List<?> entities, String PU, boolean sync,
-            String businessObject) throws Exception {
+    public void deleteEntities(List<?> entities, String businessObject) throws Exception {
         try {
-
             BusinessObjectPersistenceMultiple business = null;
 
             if (businessObject != null) {

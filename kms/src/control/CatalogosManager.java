@@ -423,7 +423,7 @@ public class CatalogosManager {
                 params.put("id", pr.getCategoria());
                 dto.Categoria cat = null;
             try {
-                List<dto.Categoria> cats = (List<dto.Categoria>) adapter.getData("Categoria.findById", "",params, null, true);
+                List<dto.Categoria> cats = (List<dto.Categoria>) adapter.getData("Categoria.findById", params, null);
                 cat = cats.get(0);
             } catch (Exception ex) {
                 Logger.getLogger(CatalogosManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -432,7 +432,7 @@ public class CatalogosManager {
                 pro.setCosto(pr.getCosto());
                 
             try {
-                adapter.saveEntity(pro, null, null);
+                adapter.saveEntity(pro, null);
             } catch (Exception ex) {
                 Logger.getLogger(CatalogosManager.class.getName()).log(Level.SEVERE, null, ex);
             }
