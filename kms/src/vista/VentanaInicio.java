@@ -43,6 +43,8 @@ public class VentanaInicio extends JFrame {
         btnCancelar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
+        setResizable(false);
+
         jPanel1.setBackground(new java.awt.Color(199, 195, 191));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ingreso al sistema KMS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("URW Gothic L", 1, 13))); // NOI18N
 
