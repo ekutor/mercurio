@@ -1,10 +1,16 @@
 package control;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.persist.jpa.JpaPersistModule;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.*;
+import persistencia.ioc.PersistenciaModulo;
 import persistenciaFWK.adaptadores.IAdaptador;
 import utilidades.InvalidException;
 
@@ -394,9 +400,42 @@ public class CatalogosManager {
         adaptador = FactoriaServicios.getInstancia().getAdaptadorDeDatos(Producto.class);
         switch (tipo) {
             case RegistrosGenerales.INSERTAR: {
+                /*
+		 * Guice.createInjector() takes your Modules, and returns a new Injector
+		 * instance. Most applications will call this method exactly once, in
+		 * their main() method.
+		 */
+		Injector injector = Guice.createInjector(new PersistenciaModulo("kmsPU"));
+
+		/*
+		 * Now that we've got the injector, we can build objects.
+		 */
+		persistencia.IAdapatdor adapter = injector.getInstance(persistencia.IAdapatdor.class);
+                
                 Producto pr = new Producto((ArrayList) datos);
                 producto.ingresarProducto(pr);
-                adaptador.putObject(pr, IAdaptador.INSERTAR);
+//                adaptador.putObject(pr, IAdaptador.INSERTAR);
+                dto.Producto pro = new dto.Producto(pr.oid, pr.getDescripcion(), 
+                        pr.getPrecio(), pr.getEstado(), null, pr.getCosto(), pr.getIva());
+                pro.setBodega(pr.getBodega());
+                pro.setCalidad(pr.getCalidad());
+                Map<Object, Object> params = new HashMap<Object, Object>();
+                params.put("id", pr.getCategoria());
+                dto.Categoria cat = null;
+            try {
+                List<dto.Categoria> cats = (List<dto.Categoria>) adapter.getData("Categoria.findById", "",params, null, true);
+                cat = cats.get(0);
+            } catch (Exception ex) {
+                Logger.getLogger(CatalogosManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                pro.setCategoria(cat);
+                pro.setCosto(pr.getCosto());
+                
+            try {
+                adapter.saveEntity(pro, null, null);
+            } catch (Exception ex) {
+                Logger.getLogger(CatalogosManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
                 break;
             }
             case RegistrosGenerales.MODIFICAR: {
